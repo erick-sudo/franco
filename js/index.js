@@ -264,8 +264,31 @@ function geoletters() {
 
           placeFlames(); // insert flames
           insertText(); // insert Happy Birthday text.
+
+          loadAudio();
         });
     });
+}
+
+function loadAudio() {
+  // create an AudioListener and add it to the camera
+  const listener = new THREE.AudioListener();
+  camera.add(listener);
+
+  // create a global audio source
+  const sound = new THREE.Audio(listener);
+
+  // load a sound and set it as the Audio object's buffer
+  const audioLoader = new THREE.AudioLoader();
+  audioLoader.load("audio/bgm.mp3", function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(true);
+    sound.setVolume(0.5);
+
+    document.getElementById("audioPlayer")?.addEventListener("click", () => {
+      sound.play();
+    });
+  });
 }
 
 function placeName() {
@@ -395,8 +418,6 @@ function insertText() {
       // save generated mesh for later control
       textObjects.push(textMesh);
     });
-
-    // Make sure audio plays after cake model & letter loads
   });
 }
 
